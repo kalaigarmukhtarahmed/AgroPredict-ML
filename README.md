@@ -148,5 +148,7 @@ The model is trained using agricultural and environmental datasets including:
 Kalaigar Mukhtar Ahmed 🎓 Engineering Student | Web Developer
 
 🏁 Conclusion
+
 This project demonstrates the practical application of Machine Learning in modern agriculture, enabling intelligent crop selection and improving decision-making for farmers.
+
 ---
