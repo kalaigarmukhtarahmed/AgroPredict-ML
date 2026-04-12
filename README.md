@@ -72,7 +72,7 @@ project/
 ├── datasets/
 │ ├── Crop_recommendation.csv
 │ ├── pesticides.csv
-│ └── city_temperature.csv (not uploaded)
+│ └── city_temperature.csv 
 │
 ├── modules/
 │ ├── init.py
