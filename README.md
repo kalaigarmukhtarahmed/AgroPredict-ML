@@ -27,7 +27,7 @@ AgroPredict is a Machine Learning-based web application designed to assist farme
 ## 🎥 Project Demo
 
 ### 🏠 Home Page
-![Home](https://github.com/kalaigarmukhtarahmed/AgroPredict-ML/blob/main/home.png)
+![Home](home.png)
 
 ### 🤖 Prediction System
 ![Prediction](prediction.png)
@@ -99,7 +99,6 @@ python app.py
 Then open in browser:
 http://127.0.0.1:5000/
 ```
-
 ---
 📊 Dataset
 ```bash
@@ -136,14 +135,18 @@ The model is trained using agricultural and environmental datasets including:
 ---
 🛠️ Tech Stack
 ```bash
-Python 🐍
-Flask 🌐
-Scikit-learn 🤖
-HTML + CSS + JavaScript 🎨
+## 🛠️ Tech Stack
+
+- 🐍 Python  
+- 🌐 Flask  
+- 🤖 Scikit-learn  
+- 🎨 HTML, CSS, JavaScript  
 ```
 ---
 👨‍💻 Author
 
-Kalaigar Mukhtar Ahmed 🎓 Engineering Student | Web Development
+Kalaigar Mukhtar Ahmed 🎓 Engineering Student | Web Developer
 
+🏁 Conclusion
 This project demonstrates the practical application of Machine Learning in modern agriculture, enabling intelligent crop selection and improving decision-making for farmers.
+---
