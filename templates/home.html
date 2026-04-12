@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AgroPredict</title>
+
+    <style>
+        body { margin: 0; font-family: Arial; }
+
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                        url("{{ url_for('static', filename='farm.jpg') }}");
+            background-size: cover;
+            color: white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            padding: 15px;
+            background: rgba(0,0,0,0.7);
+        }
+
+        .navbar button {
+            margin-left: 10px;
+            padding: 8px;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            background: green;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* POPUP */
+        .form-container {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            width: 420px;
+            text-align: center;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            font-size: 22px;
+            color: red;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            margin-left: 10px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 90%;
+            padding: 8px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button[type="submit"] {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .result-box {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            background: #ffe5e5;
+            color: #cc0000;
+            font-weight: bold;
+        }
+
+        .suggestion-box {
+            margin-top: 8px;
+            padding: 10px;
+            border-radius: 8px;
+            background: #e6ffe6;
+            color: #006600;
+        }
+        .info-section {
+             padding: 40px;
+            background: #f5f5f5;
+            text-align: center;
+        }
+
+        .info-section h2 {
+            color: green;
+            margin-bottom: 20px;
+        }
+
+        .info-section p {
+            max-width: 800px;
+            margin: auto;
+            margin-bottom: 15px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .info-section {
+            padding: 40px;
+            background: #f5f5f5;
+            text-align: center;
+        }
+
+        .info-section h2 {
+            color: green;
+            margin-bottom: 20px;
+        }
+
+        .info-section p {
+            max-width: 800px;
+            margin: auto;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="hero">
+    <div class="navbar">
+        🌱 AgroPredict
+        <div style="float:right;">
+
+            <button onclick="scrollHome()">Home</button>
+            <button onclick="openForm()">Predict</button>
+            <button onclick="openTest()">Test</button>
+            <button onclick="openAutoTest()">Auto Test</button>
+        </div>
+    </div>
+
+    <div class="content">
+    <h1>Smart Agriculture using Machine Learning</h1>
+
+    <p style="max-width:600px; text-align:center;">
+        Predict land suitability and choose the best crop using climate data 
+        like temperature, rainfall, humidity, and soil pH.
+    </p>
+
+    <button class="btn" onclick="openForm()">Start Prediction</button>
+
+    <br><br>
+    
+    <button class="btn" onclick="scrollToInfo()">Learn More</button>
+</div>
+</div>
+<div class="info-section">
+    <h2>About Smart Agriculture</h2>
+
+    <p>
+        Smart Agriculture uses modern technologies like Machine Learning to improve farming efficiency 
+        and crop production. By analyzing environmental factors such as temperature, rainfall, humidity, 
+        and soil pH, farmers can make better decisions about crop selection.
+    </p>
+
+    <p>
+        This system helps in predicting whether a particular land is suitable for a specific crop and 
+        also suggests the best crop for given conditions. It reduces risk, improves yield, and supports 
+        sustainable farming practices.
+    </p>
+
+    <p>
+        With the help of data-driven insights, farmers can optimize resources like water, fertilizers, 
+        and pesticides, leading to increased productivity and reduced environmental impact.
+    </p>
+</div>
+
+<!-- PREDICT POPUP -->
+<div class="form-container" id="formBox"
+     style="{% if show_popup %}display:flex{% else %}display:none{% endif %}">
+    <div class="form-box">
+
+        <span class="close" onclick="closeForm()">❌</span>
+
+        <form action="/predict" method="post">
+
+            <label>Temperature (°C)</label>
+            <input type="number" name="Temperature" placeholder="20–40" min="20" max="40" required>
+
+            <label>Rainfall (mm)</label>
+            <input type="number" name="Rainfall" placeholder="200–1200" min="200" max="1200" required>
+
+            <label>Humidity (%)</label>
+            <input type="number" name="Humidity" placeholder="40–90" min="40" max="90" required>
+
+            <label>Soil pH</label>
+            <input type="number" name="Soil_pH" placeholder="5–8" step="0.1" min="5" max="8" required>
+
+            <label>Crop</label>
+            <input list="cropList" name="Crop" placeholder="Select or type crop" required>
+
+            <datalist id="cropList">
+                <option value="rice">
+                <option value="wheat">
+                <option value="maize">
+                <option value="coffee">
+                <option value="cotton">
+                <option value="sugarcane">
+                <option value="banana">
+                <option value="mango">
+            </datalist>
+
+            <button type="submit">Predict</button>
+        </form>
+
+        <div class="result-box">{{ prediction_text }}</div>
+        <div class="suggestion-box">{{ suggestion_text }}</div>
+
+    </div>
+</div>
+
+<!-- TEST POPUP -->
+<div class="form-container" id="testBox">
+    <div class="form-box">
+        <span class="close" onclick="closeTest()">❌</span>
+
+        <h3>Predefined Test</h3>
+        <button onclick="runPreTest()">Run Test</button>
+
+        <div id="preTestResult"></div>
+    </div>
+</div>
+
+<!-- AUTO TEST POPUP -->
+<div class="form-container" id="autoTestBox">
+    <div class="form-box">
+        <span class="close" onclick="closeAutoTest()">❌</span>
+
+        <h3>Auto Test</h3>
+        <button onclick="runAutoTest()">Generate</button>
+
+        <div id="autoTestResult"></div>
+    </div>
+</div>
+
+<script>
+// PREDICT
+function scrollToInfo() {
+    document.querySelector(".info-section").scrollIntoView({
+        behavior: "smooth"
+    });
+}
+function openForm() {
+    document.getElementById("formBox").style.display = "flex";
+    document.querySelector("form").reset();
+}
+function closeForm() {
+    document.querySelector("form").reset();
+    document.querySelector(".result-box").innerHTML = "";
+    document.querySelector(".suggestion-box").innerHTML = "";
+    document.getElementById("formBox").style.display = "none";
+}
+// TEST
+function openTest() {
+    document.getElementById("testBox").style.display = "flex";
+}
+function closeTest() {
+    document.getElementById("testBox").style.display = "none";
+    document.getElementById("preTestResult").innerHTML = "";
+}
+let testIndex = 0;
+let testData = [];
+
+function runPreTest() {
+    fetch('/pre_test')
+    .then(res => res.json())
+    .then(data => {
+        testData = data;
+        testIndex = 0;
+        showTest();
+    });
+}
+
+function showTest() {
+    let t = testData[testIndex];
+
+    document.getElementById("preTestResult").innerHTML =
+        "<b>Test Case " + (testIndex + 1) + "</b><br><br>" +
+        "Temp: " + t.input[0] + "<br>" +
+        "Rain: " + t.input[1] + "<br>" +
+        "Humidity: " + t.input[2] + "<br>" +
+        "pH: " + t.input[3] + "<br>" +
+        "User Crop: " + t.input[4] + "<br><br>" +
+
+        "Prediction: " + t.predicted + "<br>" +
+        "Result: " + t.result + "<br><br>" +
+
+        "<button onclick='nextTest()'>Next</button>";
+}
+
+function nextTest() {
+    testIndex++;
+
+    if (testIndex < testData.length) {
+        showTest();
+    } else {
+        document.getElementById("preTestResult").innerHTML =
+            "✅ All test cases completed";
+    }
+}
+
+// AUTO TEST
+function openAutoTest() {
+    document.getElementById("autoTestBox").style.display = "flex";
+}
+function closeAutoTest() {
+    document.getElementById("autoTestBox").style.display = "none";
+    document.getElementById("autoTestResult").innerHTML = "";
+}
+function runAutoTest() {
+    fetch('/auto_test')
+    .then(res => res.json())
+    .then(data => {
+
+        document.getElementById("autoTestResult").innerHTML =
+            "🌡 Temp: " + data.temp + "<br>" +
+            "🌧 Rain: " + data.rain + "<br>" +
+            "💧 Humidity: " + data.hum + "<br>" +
+            "🌱 pH: " + data.ph + "<br>" +
+            "🌾 User Crop: " + data.user_crop + "<br><br>" +
+
+            "<b>" + data.result + "</b><br>" +
+            data.suggestion;
+    });
+}
+
+// HOME
+function scrollHome() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
