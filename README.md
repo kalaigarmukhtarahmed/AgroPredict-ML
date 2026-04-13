@@ -145,7 +145,7 @@ The model is trained using agricultural and environmental datasets including:
 ---
 👨‍💻 Author
 
-Kalaigar Mukhtar Ahmed 🎓 Engineering Student | Web Developer
+Kalaigar Mukhtar Ahmed 🎓 Engineering Student | Web Developer | Computer Vision
 
 🏁 Conclusion
 
